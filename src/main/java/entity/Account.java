@@ -2,17 +2,16 @@ package entity;
 
 public class Account {
 
-    private int userId;
     private String userName;
     private String password;
-    private char gender;
 
-    public int getUserId() {
-        return userId;
+    public Account(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public Account(){
+
     }
 
     public String getUserName() {
@@ -29,13 +28,5 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public char getGender() {
-        return gender;
-    }
-
-    public void setGender(char gender) {
-        this.gender = gender;
     }
 }
