@@ -1,6 +1,6 @@
-package dao;
+package org.app.dao;
 
-import entity.Account;
+import org.app.entity.Account;
 
 import java.util.Collection;
 
@@ -14,6 +14,6 @@ public interface AccountDao {
 
     void deleteAccountById(int userId);
 
-    void updateAccount(int userId,Account account);
+    void updateAccount(Account account);
 
 }

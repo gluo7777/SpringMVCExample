@@ -1,17 +1,27 @@
-package entity;
+package org.app.entity;
 
 public class Account {
 
+    private int userId;
     private String userName;
     private String password;
 
-    public Account(String userName, String password) {
+    public Account(int userId, String userName, String password) {
+        this.userId = userId;
         this.userName = userName;
         this.password = password;
     }
 
     public Account(){
 
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {
