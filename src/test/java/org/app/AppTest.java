@@ -84,17 +84,17 @@ public class AppTest {
         verifyNoMoreInteractions(accountService);
     }
 
-//    @Test
-//    public void test_get_by_id_fail_404_not_found() throws Exception {
-//
-//        when(accountService.getAccountById(1)).thenReturn(null);
-//
-//        mockMvc.perform(get("/accounts/{id}", 1))
-//                .andExpect(status().isNotFound());
-//
-//        verify(accountService, times(1)).getAccountById(1);
-//        verifyNoMoreInteractions(accountService);
-//    }
+    @Test
+    public void test_get_by_id_fail_404_not_found() throws Exception {
+
+        when(accountService.getAccountById(1)).thenReturn(null);
+
+        mockMvc.perform(get("/accounts/{id}", 1))
+                .andExpect(status().isNotFound());
+
+        verify(accountService, times(1)).getAccountById(1);
+        verifyNoMoreInteractions(accountService);
+    }
 
     @Test
     public void test_create_user_success() throws Exception {
@@ -115,13 +115,41 @@ public class AppTest {
         verifyNoMoreInteractions(accountService);
     }
 
+    @Test
+    public void test_update_user_success() throws Exception {
+        Account account = new Account(1,"willk777","1234");
+        when(accountService.getAccountById(account.getUserId())).thenReturn(account);
+        doNothing().when(accountService).updateAccount(account);
+        mockMvc.perform(
+                put("/accounts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(account)))
+                .andExpect(status().isOk());
+        verify(accountService, times(1)).getAccountById(account.getUserId());
+        verify(accountService, times(1)).updateAccount(account);
+        verifyNoMoreInteractions(accountService);
+    }
+
+    @Test
+    public void test_delete_user_success() throws Exception {
+        Account account = new Account(1,"willk777","1234");
+        when(accountService.getAccountById(account.getUserId())).thenReturn(account);
+        doNothing().when(accountService).deleteAccountById(account.getUserId());
+        mockMvc.perform(
+                delete("/accounts/{id}", account.getUserId()))
+                .andExpect(status().isOk());
+        verify(accountService, times(1)).getAccountById(account.getUserId());
+        verify(accountService, times(1)).deleteAccountById(account.getUserId());
+        verifyNoMoreInteractions(accountService);
+    }
+
     /**
      * Converts a java object into its json representation
      * Source: http://memorynotfound.com/unit-test-spring-mvc-rest-service-junit-mockito/
      * @param obj java object
      * @return json stirng
      */
-    public static String asJsonString(final Object obj) {
+    private static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
         } catch (Exception e) {
