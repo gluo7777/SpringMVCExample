@@ -36,8 +36,8 @@ public class AccountService {
             accountDao.deleteAccountById(userId);
     }
 
-    public void updateAccount(Account account) {
-        accountDao.updateAccount(account);
+    public void updateAccount(int userId, Account account) {
+        accountDao.updateAccount(userId,account);
     }
 
     public boolean exists(int userId) {
