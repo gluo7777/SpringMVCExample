@@ -63,12 +63,16 @@ public class AccountController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<Void> updateAccount(@RequestBody Account account) {
-        if(accountService.getAccountById(account.getUserId()) == null){
+    @RequestMapping(value = "/{userId}", method = RequestMethod.PUT)
+    public ResponseEntity<Account> updateAccount(@PathVariable("userId") int id, @RequestBody Account account) {
+        Account currentAccount = accountService.getAccountById(id);
+        if(currentAccount == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        accountService.updateAccount(account);
-        return new ResponseEntity<>(HttpStatus.OK);
+        currentAccount.setUserId(account.getUserId());
+        currentAccount.setUserName(account.getUserName());
+        currentAccount.setPassword(account.getPassword());
+        accountService.updateAccount(id,account);
+        return new ResponseEntity<>(currentAccount,HttpStatus.OK);
     }
 }

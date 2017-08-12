@@ -46,10 +46,7 @@ public class TestAccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public void updateAccount(Account account) {
-        Account a = accounts.get(account.getUserId());
-        a.setUserName(account.getUserName());
-        a.setPassword(account.getPassword());
-        accounts.put(account.getUserId(), account);
+    public void updateAccount(int userId, Account account) {
+        accounts.put(userId, account);
     }
 }

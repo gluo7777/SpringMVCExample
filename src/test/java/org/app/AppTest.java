@@ -119,14 +119,14 @@ public class AppTest {
     public void test_update_user_success() throws Exception {
         Account account = new Account(1,"willk777","1234");
         when(accountService.getAccountById(account.getUserId())).thenReturn(account);
-        doNothing().when(accountService).updateAccount(account);
+        doNothing().when(accountService).updateAccount(account.getUserId(),account);
         mockMvc.perform(
-                put("/accounts")
+                put("/accounts/{id}", account.getUserId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(account)))
                 .andExpect(status().isOk());
         verify(accountService, times(1)).getAccountById(account.getUserId());
-        verify(accountService, times(1)).updateAccount(account);
+        verify(accountService, times(1)).updateAccount(account.getUserId(),account);
         verifyNoMoreInteractions(accountService);
     }
 
