@@ -39,4 +39,27 @@ public class Account {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public int hashCode() {
+        return 31 * userId + (userName != null ? userName.hashCode() : 0 );
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) return true; // same instance
+        else if (obj == null) return false; // null comparison
+        else if (getClass() != obj.getClass()) return false; // different classes
+        else if (userId != ((Account) obj).getUserId()) return false; // different id
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "Username: " + userName +
+                "\t" +
+                "Password: "+ password +
+                "}";
+    }
 }
