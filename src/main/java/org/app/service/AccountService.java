@@ -42,7 +42,7 @@ public class AccountService {
             accountDao.updateAccount(account);
     }
 
-    private boolean exists(int userId) {
+    public boolean exists(int userId) {
         return getAccountById(userId) != null;
     }
 }
