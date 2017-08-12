@@ -28,8 +28,7 @@ public class AccountService {
     }
 
     public void addAccount(Account account) {
-        if (!exists(account.getUserId()))
-            accountDao.addAccount(account);
+        accountDao.addAccount(account);
     }
 
     public void deleteAccountById(int userId) {
@@ -38,11 +37,10 @@ public class AccountService {
     }
 
     public void updateAccount(Account account) {
-        if (exists(account.getUserId()))
-            accountDao.updateAccount(account);
+        accountDao.updateAccount(account);
     }
 
-    private boolean exists(int userId) {
+    public boolean exists(int userId) {
         return getAccountById(userId) != null;
     }
 }
