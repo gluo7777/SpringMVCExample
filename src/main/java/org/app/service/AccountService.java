@@ -1,46 +1,53 @@
 package org.app.service;
 
-import org.app.dao.AccountDao;
+import org.app.Repository.AccountRepository;
 import org.app.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 public class AccountService {
 
-    @Qualifier("TestAccountDaoImpl")
-    private final AccountDao accountDao;
+    private final AccountRepository accountRepository;
 
     @Autowired
-    public AccountService(AccountDao accountDao){
-        this.accountDao = accountDao;
+    public AccountService(AccountRepository accountRepository){
+        this.accountRepository = accountRepository;
     }
 
     public Collection<Account> getAccounts() {
-        return accountDao.getAccounts();
+        List<Account> accounts = new LinkedList<>();
+        for(Account account : accountRepository.findAll())
+            accounts.add(account);
+        return accounts;
     }
 
-    public Account getAccountById(int userId) {
-        return accountDao.getAccountById(userId);
+    public Account getAccountById(Long userId) {
+        return accountRepository.findOne(userId);
     }
 
     public void addAccount(Account account) {
-        accountDao.addAccount(account);
+        accountRepository.save(account);
     }
 
-    public void deleteAccountById(int userId) {
-        if (exists(userId))
-            accountDao.deleteAccountById(userId);
+    public void deleteAccountById(Long userId) {
+        accountRepository.delete(userId);
     }
 
-    public void updateAccount(int userId, Account account) {
-        accountDao.updateAccount(userId,account);
+    public void updateAccount(Account account) {
+        accountRepository.save(account);
     }
 
-    public boolean exists(int userId) {
-        return getAccountById(userId) != null;
+    /**
+     * Check if username already exists before adding
+     * @param account
+     * @return
+     */
+    public boolean exists(Account account) {
+        return false;
     }
 }

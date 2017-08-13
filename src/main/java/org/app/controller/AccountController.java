@@ -5,7 +5,6 @@ import org.app.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -33,7 +32,7 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
-    public ResponseEntity<Account> getAccountById(@PathVariable("userId") int id) {
+    public ResponseEntity<Account> getAccountById(@PathVariable("userId") Long id) {
         Account account = accountService.getAccountById(id);
         if(account == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -43,18 +42,19 @@ public class AccountController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> addAccount(@RequestBody Account account, UriComponentsBuilder ucBuilder) {
-        if(accountService.exists(account.getUserId())){
+        if(accountService.exists(account)){
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        accountService.addAccount(account);
-
+        Account new_account = new Account(account.getUserName(),account.getPassword());
+        accountService.addAccount(new_account);
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/accounts/{userId}").buildAndExpand(account.getUserId()).toUri());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        headers.setLocation(ucBuilder.path("/accounts/{userId}").buildAndExpand(new_account.getUserId()).toUri());
+        accountService.addAccount(new_account);
+        return new ResponseEntity<>(headers,HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteAccountById(@PathVariable("userId") int id) {
+    public ResponseEntity<Void> deleteAccountById(@PathVariable("userId") Long id) {
         Account account = accountService.getAccountById(id);
         if(account == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -64,15 +64,12 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.PUT)
-    public ResponseEntity<Account> updateAccount(@PathVariable("userId") int id, @RequestBody Account account) {
+    public ResponseEntity<Account> updateAccount(@PathVariable("userId") Long id, @RequestBody Account account) {
         Account currentAccount = accountService.getAccountById(id);
         if(currentAccount == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        currentAccount.setUserId(account.getUserId());
-        currentAccount.setUserName(account.getUserName());
-        currentAccount.setPassword(account.getPassword());
-        accountService.updateAccount(id,account);
+        accountService.updateAccount(account);
         return new ResponseEntity<>(currentAccount,HttpStatus.OK);
     }
 }
