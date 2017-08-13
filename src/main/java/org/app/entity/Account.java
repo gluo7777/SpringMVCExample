@@ -1,13 +1,20 @@
 package org.app.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Account {
 
-    private int userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long userId;
     private String userName;
     private String password;
 
-    public Account(int userId, String userName, String password) {
-        this.userId = userId;
+    public Account(String userName, String password) {
         this.userName = userName;
         this.password = password;
     }
@@ -16,11 +23,11 @@ public class Account {
 
     }
 
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -42,7 +49,7 @@ public class Account {
 
     @Override
     public int hashCode() {
-        return 31 * userId + (userName != null ? userName.hashCode() : 0 );
+        return 31 * userId.intValue() + (userName != null ? userName.hashCode() : 0 );
     }
 
     @Override
@@ -50,7 +57,7 @@ public class Account {
         if(this == obj) return true; // same instance
         else if (obj == null) return false; // null comparison
         else if (getClass() != obj.getClass()) return false; // different classes
-        else if (userId != ((Account) obj).getUserId()) return false; // different id
+        else if (userId.equals(((Account) obj).getUserId())) return false; // different id
         return true;
     }
 

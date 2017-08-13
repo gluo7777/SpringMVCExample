@@ -8,12 +8,12 @@ public interface AccountDao {
 
     Collection<Account> getAccounts();
 
-    Account getAccountById(int userId);
+    Account getAccountById(Long userId);
 
     void addAccount(Account account);
 
-    void deleteAccountById(int userId);
+    void deleteAccountById(Long userId);
 
-    void updateAccount(int userId, Account account);
+    void updateAccount(Long userId, Account account);
 
 }

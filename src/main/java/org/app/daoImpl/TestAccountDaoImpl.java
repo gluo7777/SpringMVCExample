@@ -9,20 +9,21 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 @Qualifier("TestAccountDaoImpl")
 public class TestAccountDaoImpl implements AccountDao {
 
-    private static final Map<Integer, Account> accounts;
+    private static final Map<Long, Account> accounts;
 
-    private static final AtomicInteger counter = new AtomicInteger(0);
+    private static final AtomicLong counter = new AtomicLong(0);
 
     static {
         accounts = new HashMap<>();
-        accounts.put(counter.incrementAndGet(), new Account(counter.get(), "willk777", "112233"));
-        accounts.put(counter.incrementAndGet(), new Account(counter.get(), "ice777", "1231"));
-        accounts.put(counter.incrementAndGet(), new Account(counter.get(), "joe743", "sdfs423"));
+        accounts.put(counter.incrementAndGet(), new Account("willk777", "112233"));
+        accounts.put(counter.incrementAndGet(), new Account( "ice777", "1231"));
+        accounts.put(counter.incrementAndGet(), new Account("joe743", "sdfs423"));
     }
 
     @Override
@@ -31,7 +32,7 @@ public class TestAccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public Account getAccountById(int userId) {
+    public Account getAccountById(Long userId) {
         return accounts.get(userId);
     }
 
@@ -41,12 +42,12 @@ public class TestAccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public void deleteAccountById(int userId) {
+    public void deleteAccountById(Long userId) {
         accounts.remove(userId);
     }
 
     @Override
-    public void updateAccount(int userId, Account account) {
+    public void updateAccount(Long userId, Account account) {
         accounts.put(userId, account);
     }
 }
