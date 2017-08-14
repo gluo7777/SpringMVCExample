@@ -48,6 +48,6 @@ public class AccountService {
      * @return
      */
     public boolean exists(Account account) {
-        return false;
+        return accountRepository.findAccountByUserName(account.getUserName()) != null;
     }
 }

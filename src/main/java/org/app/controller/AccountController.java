@@ -49,7 +49,6 @@ public class AccountController {
         accountService.addAccount(new_account);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/accounts/{userId}").buildAndExpand(new_account.getUserId()).toUri());
-        accountService.addAccount(new_account);
         return new ResponseEntity<>(headers,HttpStatus.CREATED);
     }
 
@@ -66,10 +65,10 @@ public class AccountController {
     @RequestMapping(value = "/{userId}", method = RequestMethod.PUT)
     public ResponseEntity<Account> updateAccount(@PathVariable("userId") Long id, @RequestBody Account account) {
         Account currentAccount = accountService.getAccountById(id);
-        if(currentAccount == null){
+        if(!accountService.exists(currentAccount)){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        accountService.updateAccount(account);
+        accountService.updateAccount(currentAccount);
         return new ResponseEntity<>(currentAccount,HttpStatus.OK);
     }
 }

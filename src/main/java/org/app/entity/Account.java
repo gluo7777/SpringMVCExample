@@ -1,9 +1,6 @@
 package org.app.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Account {
@@ -11,6 +8,7 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
+    @Column(unique = true)
     private String userName;
     private String password;
 
@@ -57,7 +55,7 @@ public class Account {
         if(this == obj) return true; // same instance
         else if (obj == null) return false; // null comparison
         else if (getClass() != obj.getClass()) return false; // different classes
-        else if (userId.equals(((Account) obj).getUserId())) return false; // different id
+        else if (userId != ((Account)obj).userId) return false; // different id
         return true;
     }
 
